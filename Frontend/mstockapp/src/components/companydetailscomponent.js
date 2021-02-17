@@ -1,9 +1,9 @@
 import React from 'react';
 
 const CompanyDetailsComponent = (props) => {
-    const name = props.company.name;
-    const details = props.company.details;
-    const price = props.company.price;
+    const name = props.company.companyName;
+    const details = props.company.description;
+    const price = props.company.currentStockPrice;
     const isLoggedIn = props.isLoggedIn;
     const button = props.button;
 

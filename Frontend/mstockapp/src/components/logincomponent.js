@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 
 const validateForm = (errors) => {
@@ -18,11 +19,12 @@ class LoginComponent extends Component {
             password: '',
             errors: {
                 email: 'Email is required',
-                password: 'Password is required'
+                password: 'Password is required',
             },
             displayErrors: {
                 email: '',
-                password: ''
+                password: '',
+                invalidCredentials: ''
             }
         }
     }
@@ -67,23 +69,51 @@ class LoginComponent extends Component {
         });
     }
 
-    handleSubmit = (event) => {
+    async handleSubmit(event){
         let displayErrorsLocal;
         event.preventDefault();
 
-        displayErrorsLocal = this.state.displayErrors;
+        displayErrorsLocal = {...this.state.displayErrors};
         displayErrorsLocal.email = this.state.errors.email;
         displayErrorsLocal.password = this.state.errors.password;
+        displayErrorsLocal.invalidCredentials = '';
+
         this.setState({
             displayErrors: displayErrorsLocal
         });
 
         if(validateForm(this.state.errors)) {
-            console.log('Valid form');
+            try {
+                const response = await axios.post(
+                    "http://localhost:8080/users",
+                    {
+                        email: this.state.email,
+                        password: this.state.password
+                    }
+                );
+                this.props.login(response.data);
+            }
+            catch(error) {
+                this.setState({
+                    displayErrors: {
+                        email: this.state.displayErrors.email,
+                        password: this.state.displayErrors.password,
+                        invalidCredentials: 'Invalid username/password'
+                    }
+                })
+            }
         }
     }
 
     displayErrors = () => {
+        if(this.state.displayErrors.invalidCredentials !== ''){
+            return (
+                <ul style={{color: 'red'}}>
+                    <li>{this.state.displayErrors.invalidCredentials}</li>
+                </ul>
+            );
+        }
+
         return (
             <ul style={{color: 'red'}}>
                 {this.state.displayErrors.email === ''
@@ -104,7 +134,7 @@ class LoginComponent extends Component {
 
                 {this.displayErrors()}
                 
-                <form name="loginForm" onSubmit={this.handleSubmit}>
+                <form name="loginForm" onSubmit={this.handleSubmit.bind(this)}>
                     <table className="col-sm-12 col-lg-4">
                         <tbody>
                             <tr>

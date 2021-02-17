@@ -1,21 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const MenuComponent = () => {
-    const isLoggedIn = true;
+const MenuComponent = (props) => {
+    const isLoggedIn = props.isLoggedIn;
 
     const loggedInMenu = (
         <ul className="navbar-nav">
             <li className="nav-item">
-                <a className="nav-link" href="#">Companies</a>
+                <Link className="nav-link" to="/companies-list">Companies</Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">Watch List</a>
+                <Link className="nav-link" to="/watch-list">Watch List</Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">Compare Performance</a>
+                <Link className="nav-link" to="/compare-performance">Compare Performance</Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">Logout</a>
+                <Link className="nav-link" to="/" onClick={props.logout}>Logout</Link>
             </li>
         </ul>
     );
@@ -23,10 +24,10 @@ const MenuComponent = () => {
     const notLoggedInMenu = (
         <ul className="navbar-nav">
             <li className="nav-item">
-                <a className="nav-link" href="#">Login</a>
+                <Link className="nav-link" to="/login">Login</Link>
             </li>
             <li className="nav-item">
-                <a className="nav-link" href="#">Companies</a>
+                <Link className="nav-link" to="/companies-list">Companies</Link>
             </li>
         </ul>
     );
@@ -40,7 +41,7 @@ const MenuComponent = () => {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a className="navbar-brand" href="#">mStock App</a>
+            <Link className="navbar-brand" to="/">mStock App</Link>
 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

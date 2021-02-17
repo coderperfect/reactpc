@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import CompanyDetailsComponent from './companydetailscomponent';
 
@@ -5,29 +6,25 @@ class WatchListComponent extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            watchList: [
-                {name: "Wipro",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 500},
-                {name: "Hewlett Packard",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 800},
-                {name: "Cognizant",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 1000},
-                {name: "Microsoft",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 800},
-                {name: "Apple",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 800},
-                {name: "Tesla",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 800},
-                {name: "BMW",
-                details: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-                price: 800}
-            ]
+            watchList: []
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            const response = await axios.get("http://localhost:8080/watchList/1");
+            let watchList = [];
+
+            response.data.map((companyUser) => {
+                watchList.push(companyUser.company);
+            })
+
+            this.setState({
+                watchList: watchList
+            });
+        }
+        catch (error){
+
         }
     }
 
@@ -35,7 +32,7 @@ class WatchListComponent extends Component{
         return(
             companyTriad.map(company => {
                 return (
-                    <div className="col-sm-12 col-lg-4" key={company.name} style={{marginBottom:'100px'}}>
+                    <div className="col-sm-12 col-lg-4" key={company.companyName} style={{marginBottom:'100px'}}>
                         <CompanyDetailsComponent company = {company} isLoggedIn = {true} button = "Remove"/>
                     </div>
                 );
@@ -69,7 +66,7 @@ class WatchListComponent extends Component{
                     companyTriad = [];
                     
                     return (
-                        <div className="row" key={company.name}>
+                        <div className="row" key={company.companyName}>
                             {this.printCompanyTriad(companyTriadArg)}
                         </div>
                     );
