@@ -11,9 +11,9 @@ const CompanyDetailsComponent = (props) => {
 
     if(isLoggedIn){
         if(button === "Watch")
-            buttonElement = <button className="btn btn-primary">Watch</button>;
+            buttonElement = <button className="btn btn-primary" onClick={props.watch.bind(this, props.company.companyId)}>Watch</button>;
         else if(button === "Remove")
-            buttonElement = <button className="btn btn-danger">Remove</button>;
+            buttonElement = <button className="btn btn-danger" onClick={props.remove.bind(this, props.company.companyId)}>Remove</button>;
     }
 
     return (

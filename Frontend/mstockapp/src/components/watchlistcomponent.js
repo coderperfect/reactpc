@@ -6,13 +6,44 @@ class WatchListComponent extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            watchList: []
+            watchList: [],
+            user: this.props.user,
+            removed: false
+        }
+    }
+
+    async removeWatchList(companyId){
+        try {
+            const response = await axios.delete(
+                `http://localhost:8080/watchList/${this.state.user.id}/${companyId}`
+            );
+
+            alert("Removed successfully from the watchlist");
+
+            try {
+                const response = await axios.get(`http://localhost:8080/watchList/${this.state.user.id}`);
+                let watchList = [];
+    
+                response.data.map((companyUser) => {
+                    watchList.push(companyUser.company);
+                })
+    
+                this.setState({
+                    watchList: watchList
+                });
+            }
+            catch (error){
+    
+            }
+        }
+        catch(error){
+            alert(error);
         }
     }
 
     async componentDidMount() {
         try {
-            const response = await axios.get("http://localhost:8080/watchList/1");
+            const response = await axios.get(`http://localhost:8080/watchList/${this.state.user.id}`);
             let watchList = [];
 
             response.data.map((companyUser) => {
@@ -33,7 +64,7 @@ class WatchListComponent extends Component{
             companyTriad.map(company => {
                 return (
                     <div className="col-sm-12 col-lg-4" key={company.companyName} style={{marginBottom:'100px'}}>
-                        <CompanyDetailsComponent company = {company} isLoggedIn = {true} button = "Remove"/>
+                        <CompanyDetailsComponent company = {company} remove={this.removeWatchList.bind(this)} isLoggedIn = {true} button = "Remove"/>
                     </div>
                 );
             })

@@ -11,6 +11,23 @@ class CompaniesListComponent extends Component{
         }
     }
 
+    async addToWatchList(companyId){
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/watchList", 
+                {
+                    "userId": this.props.user.id,
+                    "companyId": companyId
+                }
+            );
+
+            alert("Successfully added to the watchlist");
+        }
+        catch(error) {
+            console.log(error);
+        }
+    }
+
     async componentDidMount() {
         try {
             const response = await axios.get("http://localhost:8080/companies");
@@ -28,7 +45,7 @@ class CompaniesListComponent extends Component{
             companyTriad.map(company => {
                 return (
                     <div className="col-sm-12 col-lg-4" key={company.companyName} style={{marginBottom:'100px'}}>
-                        <CompanyDetailsComponent company = {company} isLoggedIn = {this.state.isLoggedIn} button = "Watch"/>
+                        <CompanyDetailsComponent company = {company} isLoggedIn = {this.state.isLoggedIn} button = "Watch" watch={this.addToWatchList.bind(this)}/>
                     </div>
                 );
             })

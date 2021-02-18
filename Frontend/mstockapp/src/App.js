@@ -1,4 +1,4 @@
-import {Route, Router, Switch} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 import './App.css';
 import MenuComponent from './components/menucomponent'
@@ -38,10 +38,10 @@ class App extends Component {
         
         <Switch>
           <Route 
-            path="/" exact 
+            path="/" exact
             render={
               this.state.isLoggedIn
-              ? (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn}/>
+              ? (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
               : (props) => <LoginComponent {...props} login={this.login}/>
             }
           />
@@ -49,14 +49,14 @@ class App extends Component {
           <Route 
             path="/companies-list" exact 
             render={
-              (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn}/>
+              (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
             }
           />
 
           <Route 
             path="/watch-list" exact 
             render={
-              (props) => <WatchListComponent {...props} isLoggedIn={this.state.isLoggedIn}/>
+              (props) => <WatchListComponent {...props} isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
             }
           />
 
@@ -71,7 +71,7 @@ class App extends Component {
             path="/login" exact 
             render={
               this.state.isLoggedIn
-              ? (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn}/>
+              ? (props) => <CompaniesListComponent {...props} isLoggedIn={this.state.isLoggedIn} user={this.state.user}/>
               : (props) => <LoginComponent {...props} login={this.login}/>
             }
           />
